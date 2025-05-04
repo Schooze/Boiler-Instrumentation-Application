@@ -101,15 +101,15 @@ namespace Project2 {
 			   this->ValveLabel = (gcnew System::Windows::Forms::Label());
 			   this->label3 = (gcnew System::Windows::Forms::Label());
 			   this->PumpLabel = (gcnew System::Windows::Forms::Label());
+			   this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			   this->serialPort1 = (gcnew System::IO::Ports::SerialPort(this->components));
 			   this->panel2 = (gcnew System::Windows::Forms::Panel());
 			   this->GraphTableLayout = (gcnew System::Windows::Forms::TableLayoutPanel());
 			   this->label4 = (gcnew System::Windows::Forms::Label());
-			   this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			   this->tableLayoutPanel1->SuspendLayout();
 			   this->panel1->SuspendLayout();
-			   this->panel2->SuspendLayout();
 			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
+			   this->panel2->SuspendLayout();
 			   this->SuspendLayout();
 			   // 
 			   // tableLayoutPanel1
@@ -328,6 +328,20 @@ namespace Project2 {
 			   this->PumpLabel->Text = L"Pump Indicator";
 			   this->PumpLabel->Click += gcnew System::EventHandler(this, &MainForm::label2_Click);
 			   // 
+			   // pictureBox1
+			   // 
+			   this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			   this->pictureBox1->Location = System::Drawing::Point(0, 100);
+			   this->pictureBox1->Name = L"pictureBox1";
+			   this->pictureBox1->Size = System::Drawing::Size(1243, 619);
+			   this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			   this->pictureBox1->TabIndex = 14;
+			   this->pictureBox1->TabStop = false;
+			   // 
+			   // serialPort1
+			   // 
+			   this->serialPort1->BaudRate = 115200;
+			   // 
 			   // panel2
 			   // 
 			   this->panel2->BackColor = System::Drawing::Color::SlateGray;
@@ -366,16 +380,6 @@ namespace Project2 {
 			   this->label4->Text = L"GRAPH PANEL";
 			   this->label4->Click += gcnew System::EventHandler(this, &MainForm::label4_Click_1);
 			   // 
-			   // pictureBox1
-			   // 
-			   this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			   this->pictureBox1->Location = System::Drawing::Point(0, 100);
-			   this->pictureBox1->Name = L"pictureBox1";
-			   this->pictureBox1->Size = System::Drawing::Size(1243, 619);
-			   this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			   this->pictureBox1->TabIndex = 14;
-			   this->pictureBox1->TabStop = false;
-			   // 
 			   // MainForm
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
@@ -394,9 +398,9 @@ namespace Project2 {
 			   this->tableLayoutPanel1->ResumeLayout(false);
 			   this->panel1->ResumeLayout(false);
 			   this->panel1->PerformLayout();
+			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			   this->panel2->ResumeLayout(false);
 			   this->panel2->PerformLayout();
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			   this->ResumeLayout(false);
 
 		   }
@@ -475,13 +479,13 @@ namespace Project2 {
 				// Get selected port and connect
 				String^ selectedPort = comboBox1->SelectedItem->ToString();
 				serialPort1->PortName = selectedPort;
-				serialPort1->BaudRate = 9600; // Set baud rate
+				serialPort1->BaudRate = 115200; // Set baud rate
 				serialPort1->DataBits = 8;
 				serialPort1->Parity = Parity::None;
 				serialPort1->StopBits = StopBits::One;
 				serialPort1->Handshake = Handshake::None;
-				serialPort1->ReadTimeout = 500;
-				serialPort1->WriteTimeout = 500;
+				serialPort1->ReadTimeout = 5000;
+				serialPort1->WriteTimeout = 5000;
 				serialPort1->Open();
 
 				// Update UI
@@ -495,19 +499,18 @@ namespace Project2 {
 		}
 	}
 
-		   // Handle data received from serial port
+	// Handle data received from serial port
 	private: System::Void SerialPort1_DataReceived(System::Object^ sender, System::IO::Ports::SerialDataReceivedEventArgs^ e) {
-		try {
-			// Read data from the serial port
-			String^ data = serialPort1->ReadLine();
-
-			// Use BeginInvoke to update UI from a different thread
-			this->Invoke(gcnew Action<String^>(this, &MainForm::ProcessSerialData), data);
-		}
-		catch (Exception^ ex) {
-			// Use BeginInvoke to show error on UI thread
-			this->Invoke(gcnew Action<String^>(this, &MainForm::ShowError), "Error reading serial data: " + ex->Message);
-		}
+		//try {
+			if (serialPort1->BytesToRead > 0) {
+				String^ data = serialPort1->ReadLine();
+				Console::WriteLine("Received: " + data); // Log received data
+				this->Invoke(gcnew Action<String^>(this, &MainForm::ProcessSerialData), data);
+			}
+		//}
+		//catch (Exception^ ex) {
+		//	this->Invoke(gcnew Action<String^>(this, &MainForm::ShowError), "Error reading serial data: " + ex->Message);
+		//}
 	}
 
 	// Process the received serial data
@@ -529,21 +532,26 @@ namespace Project2 {
 			if (values->Length >= 5) {
 				// Parse temperature (float)
 				float temperature;
-				if (float::TryParse(values[0], temperature)) {
+				if (float::TryParse(values[0], System::Globalization::NumberStyles::Float,
+					System::Globalization::CultureInfo::InvariantCulture, temperature)) {
 					// Update temperature display or use as needed
-					// Map temperature to a scale (0-100) for display if needed
-					int tempLevel = Math::Min(Math::Max((int)(temperature), 0), 100);
-					// You might want to display this somewhere else or add a temperature label
-					receivedDataTextBox->AppendText("Temperature: " + temperature.ToString() + "°C\r\n");
+					receivedDataTextBox->AppendText("Temperature: " + temperature.ToString("F2", System::Globalization::CultureInfo::InvariantCulture) + "°C\r\n");
+				}
+				else {
+					receivedDataTextBox->AppendText("Warning: Failed to parse temperature value: " + values[0] + "\r\n");
 				}
 
 				// Parse water level (float)
 				float waterLevel;
-				if (float::TryParse(values[1], waterLevel)) {
+				if (float::TryParse(values[1], System::Globalization::NumberStyles::Float,
+					System::Globalization::CultureInfo::InvariantCulture, waterLevel)) {
 					// Update the boiler tank based on water level (0-100%)
-					int level = Math::Min(Math::Max((int)(waterLevel), 0), 100);
+					int level = Math::Min(Math::Max((int)Math::Round(waterLevel), 0), 100);
 					BoilerTank->Value = level;
-					receivedDataTextBox->AppendText("Water Level: " + waterLevel.ToString() + "%\r\n");
+					receivedDataTextBox->AppendText("Water Level: " + waterLevel.ToString("F2", System::Globalization::CultureInfo::InvariantCulture) + "%\r\n");
+				}
+				else {
+					receivedDataTextBox->AppendText("Warning: Failed to parse water level value: " + values[1] + "\r\n");
 				}
 
 				// Parse pump indicator (boolean - 0 or 1)
@@ -569,6 +577,8 @@ namespace Project2 {
 					BoilerIndicator->BackColor = boiler_is_on ? Color::Lime : Color::Red;
 					receivedDataTextBox->AppendText("Boiler: " + (boiler_is_on ? "ON" : "OFF") + "\r\n");
 				}
+				Console::WriteLine("Received Data: " + data);
+				Console::WriteLine("Parsed Values: " + values->Length);
 			}
 			else {
 				receivedDataTextBox->AppendText("Warning: Received data format does not match expected format.\r\n");
