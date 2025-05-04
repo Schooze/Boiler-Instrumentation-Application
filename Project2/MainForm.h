@@ -15,9 +15,9 @@ namespace Project2 {
 	private:
 		int progress = 0;
 		bool pump_is_running = false;
-	private: System::Windows::Forms::PictureBox^ pictureBox3;
-	private: System::Windows::Forms::PictureBox^ pictureBox2;
-	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
+
+
 	private: System::Windows::Forms::Label^ label1;
 	private: System::Windows::Forms::ProgressBar^ BoilerTank;
 	private: System::Windows::Forms::Panel^ PumpIndicator;
@@ -40,6 +40,8 @@ namespace Project2 {
 	private: System::Windows::Forms::TableLayoutPanel^ GraphTableLayout;
 
 	private: System::Windows::Forms::Panel^ BoilerIndicator;
+	private: System::Windows::Forms::PictureBox^ pictureBox1;
+
 		   String^ serialDataBuffer;  // Buffer to store received serial data
 
 	public:
@@ -87,9 +89,6 @@ namespace Project2 {
 			   this->SerialPort = (gcnew System::Windows::Forms::Button());
 			   this->receivedDataTextBox = (gcnew System::Windows::Forms::TextBox());
 			   this->receivedDataLabel = (gcnew System::Windows::Forms::Label());
-			   this->pictureBox3 = (gcnew System::Windows::Forms::PictureBox());
-			   this->pictureBox2 = (gcnew System::Windows::Forms::PictureBox());
-			   this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			   this->label1 = (gcnew System::Windows::Forms::Label());
 			   this->BoilerTank = (gcnew System::Windows::Forms::ProgressBar());
 			   this->PumpIndicator = (gcnew System::Windows::Forms::Panel());
@@ -106,12 +105,11 @@ namespace Project2 {
 			   this->panel2 = (gcnew System::Windows::Forms::Panel());
 			   this->GraphTableLayout = (gcnew System::Windows::Forms::TableLayoutPanel());
 			   this->label4 = (gcnew System::Windows::Forms::Label());
+			   this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			   this->tableLayoutPanel1->SuspendLayout();
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->BeginInit();
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->BeginInit();
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			   this->panel1->SuspendLayout();
 			   this->panel2->SuspendLayout();
+			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			   this->SuspendLayout();
 			   // 
 			   // tableLayoutPanel1
@@ -198,46 +196,12 @@ namespace Project2 {
 			   this->receivedDataLabel->TabIndex = 15;
 			   this->receivedDataLabel->Text = L"Received Data";
 			   // 
-			   // pictureBox3
-			   // 
-			   this->pictureBox3->BackColor = System::Drawing::Color::Transparent;
-			   this->pictureBox3->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox3.Image")));
-			   this->pictureBox3->Location = System::Drawing::Point(481, 297);
-			   this->pictureBox3->Name = L"pictureBox3";
-			   this->pictureBox3->Size = System::Drawing::Size(762, 369);
-			   this->pictureBox3->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			   this->pictureBox3->TabIndex = 7;
-			   this->pictureBox3->TabStop = false;
-			   // 
-			   // pictureBox2
-			   // 
-			   this->pictureBox2->BackColor = System::Drawing::Color::Transparent;
-			   this->pictureBox2->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox2.Image")));
-			   this->pictureBox2->Location = System::Drawing::Point(37, 194);
-			   this->pictureBox2->Name = L"pictureBox2";
-			   this->pictureBox2->Size = System::Drawing::Size(537, 272);
-			   this->pictureBox2->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			   this->pictureBox2->TabIndex = 6;
-			   this->pictureBox2->TabStop = false;
-			   this->pictureBox2->Click += gcnew System::EventHandler(this, &MainForm::pictureBox2_Click);
-			   // 
-			   // pictureBox1
-			   // 
-			   this->pictureBox1->BackColor = System::Drawing::Color::Transparent;
-			   this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
-			   this->pictureBox1->Location = System::Drawing::Point(456, 252);
-			   this->pictureBox1->Name = L"pictureBox1";
-			   this->pictureBox1->Size = System::Drawing::Size(179, 338);
-			   this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
-			   this->pictureBox1->TabIndex = 5;
-			   this->pictureBox1->TabStop = false;
-			   // 
 			   // label1
 			   // 
 			   this->label1->AutoSize = true;
 			   this->label1->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold));
 			   this->label1->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
-			   this->label1->Location = System::Drawing::Point(452, 229);
+			   this->label1->Location = System::Drawing::Point(522, 292);
 			   this->label1->Name = L"label1";
 			   this->label1->Size = System::Drawing::Size(122, 25);
 			   this->label1->TabIndex = 1;
@@ -245,24 +209,24 @@ namespace Project2 {
 			   // 
 			   // BoilerTank
 			   // 
-			   this->BoilerTank->Location = System::Drawing::Point(481, 284);
+			   this->BoilerTank->Location = System::Drawing::Point(542, 339);
 			   this->BoilerTank->Name = L"BoilerTank";
-			   this->BoilerTank->Size = System::Drawing::Size(128, 260);
+			   this->BoilerTank->Size = System::Drawing::Size(155, 275);
 			   this->BoilerTank->TabIndex = 0;
 			   this->BoilerTank->Click += gcnew System::EventHandler(this, &MainForm::BoilerTank_Click);
 			   // 
 			   // PumpIndicator
 			   // 
 			   this->PumpIndicator->BackColor = System::Drawing::Color::Red;
-			   this->PumpIndicator->Location = System::Drawing::Point(265, 408);
+			   this->PumpIndicator->Location = System::Drawing::Point(252, 480);
 			   this->PumpIndicator->Name = L"PumpIndicator";
-			   this->PumpIndicator->Size = System::Drawing::Size(81, 22);
+			   this->PumpIndicator->Size = System::Drawing::Size(85, 22);
 			   this->PumpIndicator->TabIndex = 4;
 			   // 
 			   // ValveIndicator
 			   // 
 			   this->ValveIndicator->BackColor = System::Drawing::Color::Red;
-			   this->ValveIndicator->Location = System::Drawing::Point(822, 534);
+			   this->ValveIndicator->Location = System::Drawing::Point(970, 652);
 			   this->ValveIndicator->Name = L"ValveIndicator";
 			   this->ValveIndicator->Size = System::Drawing::Size(81, 22);
 			   this->ValveIndicator->TabIndex = 5;
@@ -283,8 +247,6 @@ namespace Project2 {
 			   this->panel1->Controls->Add(this->BoilerTank);
 			   this->panel1->Controls->Add(this->label1);
 			   this->panel1->Controls->Add(this->pictureBox1);
-			   this->panel1->Controls->Add(this->pictureBox2);
-			   this->panel1->Controls->Add(this->pictureBox3);
 			   this->panel1->Location = System::Drawing::Point(26, 27);
 			   this->panel1->Name = L"panel1";
 			   this->panel1->Size = System::Drawing::Size(1246, 719);
@@ -293,7 +255,7 @@ namespace Project2 {
 			   // BoilerIndicator
 			   // 
 			   this->BoilerIndicator->BackColor = System::Drawing::Color::Red;
-			   this->BoilerIndicator->Location = System::Drawing::Point(504, 596);
+			   this->BoilerIndicator->Location = System::Drawing::Point(581, 673);
 			   this->BoilerIndicator->Name = L"BoilerIndicator";
 			   this->BoilerIndicator->Size = System::Drawing::Size(81, 22);
 			   this->BoilerIndicator->TabIndex = 5;
@@ -337,7 +299,7 @@ namespace Project2 {
 			   this->ValveLabel->BackColor = System::Drawing::Color::Transparent;
 			   this->ValveLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				   static_cast<System::Byte>(0)));
-			   this->ValveLabel->Location = System::Drawing::Point(786, 380);
+			   this->ValveLabel->Location = System::Drawing::Point(919, 531);
 			   this->ValveLabel->Name = L"ValveLabel";
 			   this->ValveLabel->Size = System::Drawing::Size(156, 25);
 			   this->ValveLabel->TabIndex = 10;
@@ -359,7 +321,7 @@ namespace Project2 {
 			   this->PumpLabel->BackColor = System::Drawing::Color::Transparent;
 			   this->PumpLabel->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 10, System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
 				   static_cast<System::Byte>(0)));
-			   this->PumpLabel->Location = System::Drawing::Point(238, 252);
+			   this->PumpLabel->Location = System::Drawing::Point(217, 319);
 			   this->PumpLabel->Name = L"PumpLabel";
 			   this->PumpLabel->Size = System::Drawing::Size(156, 25);
 			   this->PumpLabel->TabIndex = 8;
@@ -404,13 +366,23 @@ namespace Project2 {
 			   this->label4->Text = L"GRAPH PANEL";
 			   this->label4->Click += gcnew System::EventHandler(this, &MainForm::label4_Click_1);
 			   // 
+			   // pictureBox1
+			   // 
+			   this->pictureBox1->Image = (cli::safe_cast<System::Drawing::Image^>(resources->GetObject(L"pictureBox1.Image")));
+			   this->pictureBox1->Location = System::Drawing::Point(0, 100);
+			   this->pictureBox1->Name = L"pictureBox1";
+			   this->pictureBox1->Size = System::Drawing::Size(1243, 619);
+			   this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::StretchImage;
+			   this->pictureBox1->TabIndex = 14;
+			   this->pictureBox1->TabStop = false;
+			   // 
 			   // MainForm
 			   // 
 			   this->AutoScaleDimensions = System::Drawing::SizeF(9, 20);
 			   this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			   this->BackColor = System::Drawing::Color::FromArgb(static_cast<System::Int32>(static_cast<System::Byte>(224)), static_cast<System::Int32>(static_cast<System::Byte>(224)),
 				   static_cast<System::Int32>(static_cast<System::Byte>(224)));
-			   this->ClientSize = System::Drawing::Size(1828, 774);
+			   this->ClientSize = System::Drawing::Size(1828, 1046);
 			   this->Controls->Add(this->panel2);
 			   this->Controls->Add(this->panel1);
 			   this->ForeColor = System::Drawing::SystemColors::ButtonHighlight;
@@ -420,13 +392,11 @@ namespace Project2 {
 			   this->Text = L"Boiler Instrumentation";
 			   this->Load += gcnew System::EventHandler(this, &MainForm::MainForm_Load);
 			   this->tableLayoutPanel1->ResumeLayout(false);
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox3))->EndInit();
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox2))->EndInit();
-			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			   this->panel1->ResumeLayout(false);
 			   this->panel1->PerformLayout();
 			   this->panel2->ResumeLayout(false);
 			   this->panel2->PerformLayout();
+			   (cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->EndInit();
 			   this->ResumeLayout(false);
 
 		   }
